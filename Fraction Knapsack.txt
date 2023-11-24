@@ -1,0 +1,63 @@
+/*
+Fraction Knapsack:
+You are given an N Item and each item consists with profit and weight
+pute these Item into knapsack of capacity W to get maximum profit.
+In a Fraction Knapsack we can break the item to achieve the maximum profit.
+*/
+
+
+//Program for fracktion Knapsack.
+#include <bits/stdc++.h>
+using namespace std;
+
+//Structure for each Item of Knapsack
+struct Item{
+	int profit;
+	int weight;
+	Item(int profit = 0, int weight= 0){
+		this->profit = profit;
+		this->weight = weight;
+	}
+};
+//comparator function to sort the Items in decending order.
+bool comp(Item a, Item b){
+	//Compute ration of profit and weightif each item.
+	double rationA = (double)a.profit/(double)a.weight;
+	double rationB = (double)b.profit/(double)b.weight;
+	return rationA>rationB;
+}
+
+//Function to compute Maximum profit using fracktion Knapsack.
+double findMaxProfit(int W, Item arr[], int n){
+	sort(arr, arr+n, comp);
+	double maxProfit = 0.0;
+	//Traverse each item.
+	for(int i = 0;i<n;i++){
+		if(arr[i].weight<=W){
+				W-= arr[i].weight;
+			maxProfit+=  arr[i].profit;
+		
+		}
+		else{
+			maxProfit+= (arr[i].profit*((double)W/(double)arr[i].weight));
+			//break;
+		}
+	}
+	return maxProfit;
+}
+
+int main() {
+	// your code goes here
+	int n, W;
+	cin>>n>>W;
+	Item arr[n];
+	for(int i = 0;i<n;i++){
+		int profit, weight;
+		cin>>profit>>weight;
+		arr[i] = Item(profit, weight);
+	}
+	double res = findMaxProfit(W, arr, n);
+	cout<<res<<endl;
+	
+	return 0;
+}
